@@ -1,0 +1,26 @@
+services:
+  flask_api:
+    build: ./python-api
+    container_name: python-api
+    ports: 
+      - "5000:5000"
+    volumes: 
+      - ./python-api:/app  # Descomente se quiser montar o volume local
+    command: "python app.py"
+
+  mysql_db:
+    image: "mysql:8.0"
+    environment:
+      - MYSQL_USER=aula
+      - MYSQL_HOST=mysql_db
+      - MYSQL_ROOT_PASSWORD=aula6
+      - MYSQL_DATABASE=flaskdb
+    volumes:
+      - mysql_data:/var/lib/mysql  # Utilize um volume nomeado para persistência de dados
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql_data:  # Definindo o volume nomeado
