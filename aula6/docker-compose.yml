@@ -5,22 +5,28 @@ services:
     ports: 
       - "5000:5000"
     volumes: 
-      - ./python-api:/app  # Descomente se quiser montar o volume local
+      - ./python-api:/app
     command: "python app.py"
+    depends_on:
+      - mysql_db
+    networks:
+      - app-network
 
   mysql_db:
-    image: "mysql:8.0"
+    image: "mysql:5.6"
     environment:
-      - MYSQL_USER=aula
-      - MYSQL_HOST=mysql_db
-      - MYSQL_ROOT_PASSWORD=aula6
-      - MYSQL_DATABASE=flaskdb
+      MYSQL_USER: aula
+      MYSQL_PASSWORD: aula6
+      MYSQL_ROOT_PASSWORD: aula6
+      MYSQL_DATABASE: flaskdb
     volumes:
-      - mysql_data:/var/lib/mysql  # Utilize um volume nomeado para persistência de dados
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
 
 networks:
   app-network:
     driver: bridge
 
 volumes:
-  mysql_data:  # Definindo o volume nomeado
+  mysql_data:
