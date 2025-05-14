@@ -4,9 +4,18 @@ services:
     container_name: python-api
     ports: 
       - "5000:5000"
-    volumes: 
-      - ./python-api:/app
     command: "python app.py"
+    depends_on:
+      - mysql_db
+    networks:
+      - app-network
+
+  express_api:
+    build: ./nodejs-api
+    container_name: node-api
+    ports: 
+      - "3000:3000"
+    command: "node index.js"
     depends_on:
       - mysql_db
     networks:
